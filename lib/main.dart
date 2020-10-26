@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 _parseAndDecode(String response) {
   return jsonDecode(response);
@@ -98,17 +99,17 @@ class _MyHomePageState extends State<MyHomePage> {
     _formatDate(_setMidweekDate(DateTime.now()));
   }
 
-  DateTime _setMidweekDate(DateTime date){
-    DateTime d = date.subtract(
-      Duration(days: _checkWhetherSaturdaySundayOrWeekday(date)));
+  DateTime _setMidweekDate(DateTime date) {
+    DateTime d = date
+        .subtract(Duration(days: _checkWhetherSaturdaySundayOrWeekday(date)));
     return d;
   }
 
-  int _checkWhetherSaturdaySundayOrWeekday(DateTime data){
-    if (data.weekday == DateTime.saturday){
+  int _checkWhetherSaturdaySundayOrWeekday(DateTime data) {
+    if (data.weekday == DateTime.saturday) {
       return 1;
     }
-    if (data.weekday == DateTime.sunday){
+    if (data.weekday == DateTime.sunday) {
       return 2;
     }
     return 0;
@@ -130,12 +131,51 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListView(
                 padding: EdgeInsets.all(10),
                 children: [
-                  Text(_title ?? 'Título: $_title'),
-                  Container(
-                    child: _url != "" ? Image.network(_url) : null,
+                  Text(
+                    _title ?? 'Título: $_title',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
                   ),
-                  Text(_copyright ?? 'Autor: $_copyright'),
-                  Text(_explanation ?? 'Informação: $_explanation'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 300,
+                    width: 500,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: _url != ""
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: FadeInImage.memoryNetwork(
+                              fit: BoxFit.cover,
+                              fadeInDuration: Duration(milliseconds: 2000),
+                              placeholder: kTransparentImage,
+                              image: _url,
+                            ),
+                          )
+                        : null,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    _copyright ?? 'Autor: $_copyright',
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    _explanation ?? 'Informação: $_explanation',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ],
               ),
             )
