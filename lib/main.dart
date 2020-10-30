@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Dio demo',
       theme: ThemeData(primarySwatch: Colors.blueGrey),
       home: MyHomePage(title: 'NASA PICTURE OF THE DAY'),
@@ -73,6 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _getData();
     });
   }
+
+//define
+  GlobalKey previewContainer = new GlobalKey();
+  int originalSize = 800;
 
   _getData() {
     dio
@@ -138,6 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   SizedBox(
                     height: 10,
                   ),
+
                   Container(
                     height: 300,
                     width: 500,
@@ -148,23 +154,28 @@ class _MyHomePageState extends State<MyHomePage> {
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: FadeInImage.memoryNetwork(
-                              fit: BoxFit.cover,
-                              fadeInDuration: Duration(milliseconds: 2000),
-                              placeholder: kTransparentImage,
-                              image: _url,
-                            ),
+                                fit: BoxFit.cover,
+                                fadeInDuration:
+                                    Duration(milliseconds: 2000),
+                                placeholder: kTransparentImage,
+                                image: _url),
                           )
                         : null,
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    _copyright ?? 'Autor: $_copyright',
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  Flex(
+                    direction: Axis.horizontal,
+                    children: [
+                      Text(
+                        _copyright ?? 'Autor: $_copyright',
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 10,
@@ -172,15 +183,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     _explanation ?? 'Informação: $_explanation',
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
+                        fontSize: 20,
+                        // fontWeight: FontWeight.w600,
+                        letterSpacing: 0.9),
                   ),
                 ],
               ),
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ImageDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: ExactAssetImage('assets/tamas.jpg'), fit: BoxFit.cover)),
       ),
     );
   }
