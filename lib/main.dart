@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   SizedBox(
                     height: 10,
                   ),
-                  //Image container here....
+
                   Container(
                     height: 300,
                     width: 500,
