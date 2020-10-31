@@ -27,7 +27,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Dio demo',
-      theme: ThemeData(primarySwatch: Colors.blueGrey),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        accentColor: Colors.red,
+        scaffoldBackgroundColor: Colors.black,
+        textTheme: TextTheme(
+          //Title
+          headline1: TextStyle(color: Colors.white, fontSize: 22, fontWeight:FontWeight.w800),
+          //Author
+          bodyText1: TextStyle(color: Colors.white, fontSize: 23,fontWeight: FontWeight.w800,),
+          //Information
+          bodyText2: TextStyle(color: Colors.grey, fontSize: 20, letterSpacing: 0.9),
+        ),
+      ), //blueGrey),
+
       home: MyHomePage(title: 'NASA PICTURE OF THE DAY'),
     );
   }
@@ -82,12 +95,12 @@ class _MyHomePageState extends State<MyHomePage> {
   _getData() {
     dio
         .get<Map<String, dynamic>>(
-            "https://api.nasa.gov/planetary/apod?api_key=w42dJezDhZsu7eEBdueADBUSPZqH7fetdplKfGcy&date=$_date")
-        //"https://api.nasa.gov/planetary/apod?api_key=w42dJezDhZsu7eEBdueADBUSPZqH7fetdplKfGcy")
+        "https://api.nasa.gov/planetary/apod?api_key=w42dJezDhZsu7eEBdueADBUSPZqH7fetdplKfGcy&date=$_date")
+    //"https://api.nasa.gov/planetary/apod?api_key=w42dJezDhZsu7eEBdueADBUSPZqH7fetdplKfGcy")
         .then(
-      (response) {
+          (response) {
         setState(
-          () {
+              () {
             _title = response.data["title"];
             _copyright = response.data["copyright"];
             _explanation = response.data["explanation"];
@@ -128,9 +141,17 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            RaisedButton(
-              onPressed: () => _selectDate(context),
-              child: Text('Selecionar a data'),
+            SizedBox(
+              width: 55,
+              height: 50,
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100.0)),
+                onPressed: () => _selectDate(context),
+                color: Theme.of(context).primaryColorDark,
+                child:
+                Icon(Icons.calendar_today),
+              ),
             ),
             Expanded(
               child: ListView(
@@ -138,12 +159,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Text(
                     _title ?? 'Título: $_title',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+                    style: Theme.of(context).textTheme.headline1,
                   ),
                   SizedBox(
                     height: 10,
                   ),
-
                   Container(
                     height: 300,
                     width: 500,
@@ -152,14 +172,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     child: _url != ""
                         ? ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: FadeInImage.memoryNetwork(
-                                fit: BoxFit.cover,
-                                fadeInDuration:
-                                    Duration(milliseconds: 2000),
-                                placeholder: kTransparentImage,
-                                image: _url),
-                          )
+                      borderRadius: BorderRadius.circular(20),
+                      child: FadeInImage.memoryNetwork(
+                          fit: BoxFit.cover,
+                          fadeInDuration: Duration(milliseconds: 2000),
+                          placeholder: kTransparentImage,
+                          image: _url),
+                    )
                         : null,
                   ),
                   SizedBox(
@@ -168,12 +187,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   Flex(
                     direction: Axis.horizontal,
                     children: [
-                      Text(
+                     // child:
+                      Icon(Icons.person, color: Theme.of(context).primaryColorDark),
+                      Text(" "+
                         _copyright ?? 'Autor: $_copyright',
-                        style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w800,
-                        ),
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ],
                   ),
@@ -182,10 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Text(
                     _explanation ?? 'Informação: $_explanation',
-                    style: TextStyle(
-                        fontSize: 20,
-                        // fontWeight: FontWeight.w600,
-                        letterSpacing: 0.9),
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ],
               ),
